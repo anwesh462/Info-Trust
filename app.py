@@ -1,13 +1,16 @@
 import streamlit as st
 import joblib
+from googletrans import Translator
 
 # Load model
 model = joblib.load("fake_news_model.pkl")
 vectorizer = joblib.load("vectorizer.pkl")
 
+translator = Translator()
+
 st.set_page_config(page_title="InfoTrust", layout="wide")
 
-# ---------- SESSION STATE ----------
+# ---------- SESSION ----------
 if "page" not in st.session_state:
     st.session_state.page = "Home"
 
@@ -64,7 +67,6 @@ if st.session_state.page == "Home":
 
             # Explainability
             st.subheader("Important Words")
-
             try:
                 feature_names = vectorizer.get_feature_names_out()
                 coefficients = model.coef_[0]
@@ -75,7 +77,6 @@ if st.session_state.page == "Home":
 
                 words = [w[0] for w in top_words]
                 st.write(", ".join(words))
-
             except:
                 st.warning("Explainability not available")
 
@@ -109,8 +110,11 @@ elif st.session_state.page == "QA":
     question = st.text_input("Ask question")
 
     if st.button("Get Answer"):
-        st.success("Answer Generated")
-        st.write("This is a demo answer.")
+        if question:
+            st.success("Answer Generated")
+            st.write("This is a demo answer.")
+        else:
+            st.warning("Enter question")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -122,7 +126,10 @@ elif st.session_state.page == "URL":
     url = st.text_input("Enter URL")
 
     if st.button("Analyze URL"):
-        st.success("Credibility Score: 80%")
+        if url:
+            st.success("Credibility Score: 80%")
+        else:
+            st.warning("Enter URL")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -134,7 +141,10 @@ elif st.session_state.page == "Reddit":
     keyword = st.text_input("Enter keyword")
 
     if st.button("Analyze Reddit"):
-        st.success("Sentiment: Positive")
+        if keyword:
+            st.success("Sentiment: Positive")
+        else:
+            st.warning("Enter keyword")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -146,14 +156,12 @@ elif st.session_state.page == "YouTube":
     keyword = st.text_input("Enter topic")
 
     if st.button("Analyze YouTube"):
-        st.success("Engagement Score: High")
+        if keyword:
+            st.success("Engagement Score: High")
+        else:
+            st.warning("Enter topic")
 
     st.markdown('</div>', unsafe_allow_html=True)
-
-# ---------- TRANSLATE ----------
-from googletrans import Translator
-
-translator = Translator()
 
 # ---------- TRANSLATE ----------
 elif st.session_state.page == "Translate":
