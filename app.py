@@ -1,12 +1,10 @@
 import streamlit as st
 import joblib
-from googletrans import Translator
 
 # Load model
 model = joblib.load("fake_news_model.pkl")
 vectorizer = joblib.load("vectorizer.pkl")
 
-translator = Translator()
 
 st.set_page_config(page_title="InfoTrust", layout="wide")
 
