@@ -9,7 +9,7 @@ vectorizer = joblib.load("vectorizer.pkl")
 query_params = st.query_params
 
 if "api" in query_params:
-    text = query_params.get("text", [""])[0]
+    text = query_params.get("text", "")
 
     if text:
         vec = vectorizer.transform([text])
@@ -22,6 +22,7 @@ if "api" in query_params:
         }
 
         st.write(result)
+
     st.stop()
 # Load model and vectorizer
 model = joblib.load("fake_news_model.pkl")
