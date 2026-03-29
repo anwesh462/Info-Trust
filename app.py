@@ -8,73 +8,74 @@ vectorizer = joblib.load("vectorizer.pkl")
 # Page config
 st.set_page_config(page_title="InfoTrust", layout="wide")
 
-# Custom CSS (IMPORTANT)
+# Title
 st.markdown("""
-    <style>
-    body {
-        background-color: #f5f7fa;
-    }
-
-    .title {
-        text-align: center;
-        font-size: 40px;
-        font-weight: bold;
-        color: white;
-        padding: 20px;
-        background-color: #2c3e50;
-    }
-
-    .navbar {
-        display: flex;
-        justify-content: center;
-        background-color: #34495e;
-        padding: 10px;
-    }
-
-    .nav-item {
-        margin: 0 20px;
-        color: white;
-        font-weight: bold;
-    }
-
-    .card {
-        background-color: white;
-        padding: 30px;
-        border-radius: 10px;
-        width: 60%;
-        margin: auto;
-        margin-top: 50px;
-        box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
-    }
-
-    textarea {
-        width: 100%;
-        height: 150px;
-    }
-
-    </style>
+    <h1 style='text-align: center; background-color:#2c3e50; color:white; padding:20px;'>
+    InfoTrust News Credibility Analysis
+    </h1>
 """, unsafe_allow_html=True)
 
-# Header
-st.markdown('<div class="title">InfoTrust News Credibility Analysis</div>', unsafe_allow_html=True)
+# Tabs (REAL WORKING NAVIGATION)
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    "🏠 Home",
+    "📝 Summarize",
+    "❓ QA",
+    "🔗 URL Analysis",
+    "🐦 Twitter/X Analysis"
+])
 
-# Navbar
-st.markdown("""
-<div class="navbar">
-    <div class="nav-item">Home</div>
-    <div class="nav-item">Summarize</div>
-    <div class="nav-item">QA</div>
-    <div class="nav-item">URL Analysis</div>
-    <div class="nav-item">Twitter/X Analysis</div>
-</div>
-""", unsafe_allow_html=True)
+# HOME
+with tab1:
+    st.subheader("Welcome to InfoTrust")
+    st.write("""
+    This system analyzes news credibility using:
+    - NLP techniques
+    - Machine learning
+    - Credibility scoring
+    - Explainable AI
+    """)
 
-# Main Card
-st.markdown('<div class="card">', unsafe_allow_html=True)
+# SUMMARIZE
+with tab2:
+    st.subheader("News Summarization")
+    text = st.text_area("Enter news to summarize")
 
-st.subheader("News Text Analysis")
+    if st.button("Summarize"):
+        st.info("Summary feature demo (placeholder)")
+        st.write(text[:200] + "...")
 
-news_text = st.text_area("Enter News Text")
+# QA
+with tab3:
+    st.subheader("Question Answering")
+    question = st.text_input("Ask a question")
+
+    if st.button("Get Answer"):
+        st.info("QA feature demo (placeholder)")
+        st.write("Answer: This is a demo response.")
+
+# URL ANALYSIS
+with tab4:
+    st.subheader("URL Analysis")
+    url = st.text_input("Enter URL")
+
+    if st.button("Analyze URL"):
+        st.info("URL analysis demo")
+        st.write("Credibility Score: 75%")
+
+# TWITTER/X
+with tab5:
+    st.subheader("Twitter/X Analysis")
+    keyword = st.text_input("Enter keyword")
+
+    if st.button("Analyze Twitter"):
+        st.info("Twitter sentiment demo")
+        st.write("Sentiment: Positive")
+
+# MAIN ANALYSIS (Keep your model here)
+st.markdown("---")
+st.subheader("🔍 News Text Analysis")
+
+news_text = st.text_area("Enter News Content")
 
 if st.button("Analyze News"):
     if news_text:
@@ -88,5 +89,3 @@ if st.button("Analyze News"):
             st.error(f"❌ Fake News (Confidence: {round(prob[0]*100,2)}%)")
     else:
         st.warning("Please enter text")
-
-st.markdown('</div>', unsafe_allow_html=True)
