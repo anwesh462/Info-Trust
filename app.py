@@ -1,6 +1,5 @@
 import streamlit as st
 import joblib
-import numpy as np
 
 # Load model and vectorizer
 model = joblib.load("fake_news_model.pkl")
@@ -30,16 +29,15 @@ with tab1:
     st.subheader("📊 System Overview")
     st.write("""
     InfoTrust is a multi-module system for news credibility analysis using:
-    - Natural Language Processing (NLP)
+    - NLP techniques
     - Machine Learning models
-    - Explainable AI techniques
-    - Social signal analysis
+    - Explainable AI
     """)
 
 # ---------------- SUMMARIZE ----------------
 with tab2:
     st.subheader("📝 News Summarization")
-    text = st.text_area("Enter news text")
+    text = st.text_area("Enter text to summarize")
 
     if st.button("Summarize Text"):
         if text:
@@ -57,7 +55,7 @@ with tab3:
     if st.button("Get Answer"):
         if question:
             st.success("Answer Generated")
-            st.write("This is a demo answer based on input context.")
+            st.write("This is a demo answer.")
         else:
             st.warning("Enter a question")
 
@@ -68,7 +66,7 @@ with tab4:
 
     if st.button("Analyze URL"):
         if url:
-            st.success("URL analyzed successfully")
+            st.success("URL analyzed")
             st.write("Credibility Score: 80%")
         else:
             st.warning("Enter URL")
@@ -97,14 +95,14 @@ if st.button("Analyze News"):
         prediction = model.predict(vec)[0]
         prob = model.predict_proba(vec)[0]
 
-        # Prediction output
+        # Prediction result
         if prediction == 1:
             st.success(f"✅ Real News ({round(prob[1]*100,2)}%)")
         else:
             st.error(f"❌ Fake News ({round(prob[0]*100,2)}%)")
 
-        # ---------------- EXPLAINABILITY ----------------
-        st.subheader("🧠 Explainability (Top Influencing Words)")
+        # -------- SIMPLE EXPLAINABILITY --------
+        st.subheader("🧠 Important Words")
 
         try:
             feature_names = vectorizer.get_feature_names_out()
@@ -112,25 +110,23 @@ if st.button("Analyze News"):
 
             input_indices = vec.nonzero()[1]
 
-            top_features = sorted(
-                [(feature_names[i], coefficients[i]) for i in input_indices],
+            # Get top words
+            word_scores = [
+                (feature_names[i], coefficients[i]) for i in input_indices
+            ]
+
+            top_words = sorted(
+                word_scores,
                 key=lambda x: abs(x[1]),
                 reverse=True
-            )[:10]
+            )[:8]
 
-            words = [f[0] for f in top_features]
-            scores = [f[1] for f in top_features]
+            words_only = [w[0] for w in top_words]
 
-            st.write("Top words influencing prediction:")
-
-            for w, s in zip(words, scores):
-                st.write(f"🔹 {w} → Influence: {round(s,3)}")
-
-            # Graph
-            st.bar_chart(scores)
+            st.write(", ".join(words_only))
 
         except:
-            st.warning("Explainability not available for this model type")
+            st.warning("Explainability not available")
 
     else:
         st.warning("Please enter text")
