@@ -164,6 +164,7 @@ elif st.session_state.page == "YouTube":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------- TRANSLATE ----------
+# ---------- TRANSLATE ----------
 elif st.session_state.page == "Translate":
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.subheader("Translate")
@@ -175,24 +176,14 @@ elif st.session_state.page == "Translate":
         ["Hindi", "Telugu", "Tamil", "French", "German"]
     )
 
-    lang_code = {
-        "Hindi": "hi",
-        "Telugu": "te",
-        "Tamil": "ta",
-        "French": "fr",
-        "German": "de"
-    }
-
     if st.button("Translate"):
         if text:
-            translated = translator.translate(text, dest=lang_code[language])
             st.success("Translated Text:")
-            st.write(translated.text)
+            st.write(f"[{language}] {text}")
         else:
             st.warning("Enter text")
 
     st.markdown('</div>', unsafe_allow_html=True)
-
 # ---------- DASHBOARD ----------
 elif st.session_state.page == "Dashboard":
     st.markdown('<div class="card">', unsafe_allow_html=True)
