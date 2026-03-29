@@ -5,7 +5,6 @@ import joblib
 model = joblib.load("fake_news_model.pkl")
 vectorizer = joblib.load("vectorizer.pkl")
 
-
 st.set_page_config(page_title="InfoTrust", layout="wide")
 
 # ---------- SESSION ----------
@@ -27,7 +26,7 @@ cols = st.columns(8)
 pages = ["Home","Summarize","QA","URL","Reddit","YouTube","Translate","Dashboard"]
 
 for i, p in enumerate(pages):
-    if cols[i].button(p):
+    if cols[i].button(p, key=f"nav_{p}"):
         navigate(p)
 
 # ---------- CARD STYLE ----------
@@ -50,9 +49,9 @@ if st.session_state.page == "Home":
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.subheader("News Text Analysis")
 
-    news_text = st.text_area("Paste news here...")
+    news_text = st.text_area("Paste news here...", key="news_input")
 
-    if st.button("Analyze News"):
+    if st.button("Analyze News", key="news_btn"):
         if news_text:
             vec = vectorizer.transform([news_text])
             prediction = model.predict(vec)[0]
@@ -88,9 +87,9 @@ elif st.session_state.page == "Summarize":
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.subheader("Summarization")
 
-    text = st.text_area("Enter text")
+    text = st.text_area("Enter text", key="sum_input")
 
-    if st.button("Summarize"):
+    if st.button("Summarize", key="summarize_btn"):
         if text:
             summary = " ".join(text.split()[:50])
             st.success("Summary Generated")
@@ -105,9 +104,9 @@ elif st.session_state.page == "QA":
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.subheader("Question Answering")
 
-    question = st.text_input("Ask question")
+    question = st.text_input("Ask question", key="qa_input")
 
-    if st.button("Get Answer"):
+    if st.button("Get Answer", key="qa_btn"):
         if question:
             st.success("Answer Generated")
             st.write("This is a demo answer.")
@@ -121,9 +120,9 @@ elif st.session_state.page == "URL":
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.subheader("URL Analysis")
 
-    url = st.text_input("Enter URL")
+    url = st.text_input("Enter URL", key="url_input")
 
-    if st.button("Analyze URL"):
+    if st.button("Analyze URL", key="url_btn"):
         if url:
             st.success("Credibility Score: 80%")
         else:
@@ -136,9 +135,9 @@ elif st.session_state.page == "Reddit":
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.subheader("Reddit Analysis")
 
-    keyword = st.text_input("Enter keyword")
+    keyword = st.text_input("Enter keyword", key="reddit_input")
 
-    if st.button("Analyze Reddit"):
+    if st.button("Analyze Reddit", key="reddit_btn"):
         if keyword:
             st.success("Sentiment: Positive")
         else:
@@ -151,9 +150,9 @@ elif st.session_state.page == "YouTube":
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.subheader("YouTube Analysis")
 
-    keyword = st.text_input("Enter topic")
+    keyword = st.text_input("Enter topic", key="yt_input")
 
-    if st.button("Analyze YouTube"):
+    if st.button("Analyze YouTube", key="yt_btn"):
         if keyword:
             st.success("Engagement Score: High")
         else:
@@ -162,19 +161,19 @@ elif st.session_state.page == "YouTube":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------- TRANSLATE ----------
-# ---------- TRANSLATE ----------
 elif st.session_state.page == "Translate":
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.subheader("Translate")
 
-    text = st.text_area("Enter text")
+    text = st.text_area("Enter text", key="trans_input")
 
     language = st.selectbox(
         "Select Language",
-        ["Hindi", "Telugu", "Tamil", "French", "German"]
+        ["Hindi", "Telugu", "Tamil", "French", "German"],
+        key="lang_select"
     )
 
-    if st.button("Translate"):
+    if st.button("Translate", key="translate_btn"):
         if text:
             st.success("Translated Text:")
             st.write(f"[{language}] {text}")
@@ -182,6 +181,7 @@ elif st.session_state.page == "Translate":
             st.warning("Enter text")
 
     st.markdown('</div>', unsafe_allow_html=True)
+
 # ---------- DASHBOARD ----------
 elif st.session_state.page == "Dashboard":
     st.markdown('<div class="card">', unsafe_allow_html=True)
