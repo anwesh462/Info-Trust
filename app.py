@@ -151,15 +151,37 @@ elif st.session_state.page == "YouTube":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------- TRANSLATE ----------
+from googletrans import Translator
+
+translator = Translator()
+
+# ---------- TRANSLATE ----------
 elif st.session_state.page == "Translate":
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.subheader("Translate")
 
     text = st.text_area("Enter text")
 
+    language = st.selectbox(
+        "Select Language",
+        ["Hindi", "Telugu", "Tamil", "French", "German"]
+    )
+
+    lang_code = {
+        "Hindi": "hi",
+        "Telugu": "te",
+        "Tamil": "ta",
+        "French": "fr",
+        "German": "de"
+    }
+
     if st.button("Translate"):
-        st.success("Translated Text:")
-        st.write(text)
+        if text:
+            translated = translator.translate(text, dest=lang_code[language])
+            st.success("Translated Text:")
+            st.write(translated.text)
+        else:
+            st.warning("Enter text")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
