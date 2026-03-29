@@ -1,6 +1,28 @@
 import streamlit as st
 import joblib
+import json
 
+model = joblib.load("fake_news_model.pkl")
+vectorizer = joblib.load("vectorizer.pkl")
+
+# -------- API MODE --------
+query_params = st.experimental_get_query_params()
+
+if "api" in query_params:
+    text = query_params.get("text", [""])[0]
+
+    if text:
+        vec = vectorizer.transform([text])
+        prediction = model.predict(vec)[0]
+        prob = model.predict_proba(vec)[0]
+
+        result = {
+            "prediction": "REAL" if prediction == 1 else "FAKE",
+            "confidence": float(max(prob))
+        }
+
+        st.write(result)
+    st.stop()
 # Load model and vectorizer
 model = joblib.load("fake_news_model.pkl")
 vectorizer = joblib.load("vectorizer.pkl")
