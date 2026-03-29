@@ -6,7 +6,7 @@ model = joblib.load("fake_news_model.pkl")
 vectorizer = joblib.load("vectorizer.pkl")
 
 # -------- API MODE --------
-query_params = st.experimental_get_query_params()
+query_params = st.query_params
 
 if "api" in query_params:
     text = query_params.get("text", [""])[0]
